@@ -128,6 +128,11 @@ int redisKeepAlive(redisContext *c, int interval) {
         __redisSetError(c,REDIS_ERR_OTHER,strerror(errno));
         return REDIS_ERR;
     }
+
+#elif defined(_OpenBSD)
+/* OpenBSD does not support TCP_KEEPALIVE socket option */
+	__redisSetError(c,REDIS_ERR_OTHER, "OpenBSD does not support TCP_KEEPALIVE socket option.");
+	return REDIS_ERR;
 #else
     val = interval;
     if (setsockopt(fd, IPPROTO_TCP, TCP_KEEPIDLE, &val, sizeof(val)) < 0) {

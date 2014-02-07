@@ -17,4 +17,8 @@
 #define _OSX
 #endif
 
+#if __OpenBSD__
+#define _OpenBSD
+#endif
+
 #endif
